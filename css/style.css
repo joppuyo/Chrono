@@ -1,0 +1,57 @@
+html {
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica Roboto, Arial, sans-serif;
+}
+
+body {
+    height: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 640px;
+    text-align: center;
+    height: 100%;
+    min-height: 568px;
+}
+
+.vertical-center {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.title {
+     font-weight: 600;
+     font-size: 32px;
+     height: 25%;
+}
+
+.action {
+    font-weight: 600;
+    font-size: 32px;
+    height: 25%;
+}
+
+.circle-container {
+    height: 50%;
+}
+
+.circle {
+    margin: 0 auto;
+    background-color: #D8D8D8;
+    width: 220px;
+    height: 220px;
+    line-height: 220px;
+    font-size: 42px;
+    border-radius: 220px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.circle-active {
+    background-color: #FA0000;
+    color: white;
+}
