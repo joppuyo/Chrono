@@ -59,8 +59,12 @@ $app->user = function () {
 };
 
 
-$app->get('/', function () {
-  echo "Hello world";
+$app->get('/', function () use ($app) {
+  if ($app->user) {
+    $app->redirectTo('track');
+  } else {
+    $app->redirectTo('login');
+  }
 });
 
 $app->map('/login/', function () use ($app) {
@@ -94,7 +98,6 @@ $app->map('/signup/', function () use ($app) {
 })->via('GET', 'POST');
 
 $app->get('/track/', $isLoggedIn($app), function () use ($app) {
-  echo $app->user->email;
   $app->render('track.twig');
 })->name('track');
 

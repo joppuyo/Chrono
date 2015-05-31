@@ -63,3 +63,21 @@ body {
 .action {
     cursor: pointer;
 }
+
+.tab-container {
+    width: 100%;
+    height: 64px;
+}
+
+.tab-item {
+    line-height: 64px;
+    font-size: 24px;
+    width: 33.33%;
+    text-align: center;
+    float: left;
+    background-color: #D8D8D8;
+}
+
+.tab-item-active {
+    background-color: white;
+}
