@@ -108,8 +108,12 @@ $app->post('/api/time/', function () use ($app) {
   } else {
     $json = json_decode($app->request()->getBody());
     $time = new Time;
-    $time->start_datetime = $json->start_datetime;
-    $time->end_datetime = $json->end_datetime;
+    $unixStartTime = strtotime($json->start_datetime);
+    $unixStartTime = floor($unixStartTime/(60*5))*(60*5);
+    $unixEndTime = strtotime($json->end_datetime);
+    $unixEndTime = ceil($unixEndTime/(60*5))*(60*5);
+    $time->start_datetime = \Carbon\Carbon::createFromTimestamp($unixStartTime)->toDateTimeString();
+    $time->end_datetime = \Carbon\Carbon::createFromTimestamp($unixEndTime)->toDateTimeString();
     $user = $app->user;
     $user->times()->save($time);
     $app->halt(200);
