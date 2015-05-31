@@ -7,7 +7,7 @@ $(function(){
         'ms|s|m|h|d|w|m|y|||',
         '',
         '',
-        '');
+        '0s');
 
     if (localStorage.active === "true") {
         startCounter();

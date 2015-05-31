@@ -7,7 +7,7 @@ body {
     height: 100%;
 }
 
-.container {
+.chrono-container {
     margin: 0 auto;
     max-width: 640px;
     text-align: center;
@@ -45,7 +45,7 @@ body {
     width: 220px;
     height: 220px;
     line-height: 220px;
-    font-size: 42px;
+    font-size: 38px;
     border-radius: 220px;
     font-weight: 600;
     cursor: pointer;
