@@ -44,7 +44,12 @@ $(function(){
     }
 
     $("#action-finish").click(function(){
-        alert("send data to server");
+        var data = {};
+        data.start_datetime = moment(localStorage.startTime).format("YYYY-MM-DD HH:mm:ss");
+        data.end_datetime = moment().format("YYYY-MM-DD HH:mm:ss");
+        console.log(data);
+        $.post(apiRoot + "time/", JSON.stringify(data), function(){
+        });
         stopCounter();
     });
 

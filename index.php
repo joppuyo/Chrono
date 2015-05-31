@@ -41,7 +41,14 @@ $isLoggedIn = function($app) {
   };
 };
 
-class User extends \Illuminate\Database\Eloquent\Model {}
+class User extends \Illuminate\Database\Eloquent\Model {
+  public function times()
+  {
+    return $this->hasMany('Time');
+  }
+}
+
+class Time extends \Illuminate\Database\Eloquent\Model {}
 
 $app->user = function () {
   if ($_SESSION['user_id']) {
@@ -93,6 +100,20 @@ $app->get('/track/', $isLoggedIn($app), function () use ($app) {
 
 $app->get('/log/', $isLoggedIn($app), function () {
   echo "log";
+});
+
+$app->post('/api/time/', function () use ($app) {
+  if(!isset($_SESSION['user_id'])){
+    $app->halt(403);
+  } else {
+    $json = json_decode($app->request()->getBody());
+    $time = new Time;
+    $time->start_datetime = $json->start_datetime;
+    $time->end_datetime = $json->end_datetime;
+    $user = $app->user;
+    $user->times()->save($time);
+    $app->halt(200);
+  }
 });
 
 $app->get('/create_db', function () {
