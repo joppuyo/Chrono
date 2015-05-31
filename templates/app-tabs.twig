@@ -1,0 +1,5 @@
+<div class="tab-container">
+    <div class="tab-item {% if active == 'track' %}tab-item-active{% endif %}"><a href="{{ urlFor('track') }}">Track</a></div>
+    <div class="tab-item {% if active == 'log' %}tab-item-active{% endif %}"><a href="{{ urlFor('log') }}">Log</a></div>
+    <div class="tab-item {% if active == 'user' %}tab-item-active{% endif %}"><a href="{{ urlFor('user') }}">User</a></div>
+</div>

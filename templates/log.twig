@@ -1,0 +1,35 @@
+{% extends 'base.twig' %}
+{% set active = 'log' %}
+{% block head %}
+    {% include 'app-scripts.twig' %}
+{% endblock %}
+{% block body %}
+    {% include 'app-tabs.twig' %}
+    <div class="container">
+        <h1>CSV formatted data</h1>
+        <textarea class="form-control" rows="8">
+{% for time in times %}
+PROJECTNAME;TASKNAME;{{ time.start_datetime | date('Y-m-d H:i') }};{{ time.end_datetime | date('H:i') }};DESCRIPTION
+{% endfor %}
+        </textarea>
+        <h1>Table</h1>
+        <table class="table">
+            <thead>
+                <th>Start time</th>
+                <th>End time</th>
+            </thead>
+            <tbody>
+                {% for time in times %}
+                    <tr>
+                        <td>
+                            {{ time.start_datetime | date('Y-m-d H:i') }}
+                        </td>
+                        <td>
+                            {{ time.end_datetime | date('Y-m-d H:i') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

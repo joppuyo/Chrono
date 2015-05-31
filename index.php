@@ -5,8 +5,6 @@ require "config.php";
 
 session_start();
 
-$app = new \Slim\Slim();
-
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 $capsule = new Capsule;
@@ -29,10 +27,10 @@ $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig()
 ));
 
-$app->view->parserExtensions = array(
+$view = $app->view();
+$view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
-
 $isLoggedIn = function($app) {
   return function () use ($app) {
     if (!isset($_SESSION['user_id'])) {
@@ -65,7 +63,7 @@ $app->get('/', function () use ($app) {
   } else {
     $app->redirectTo('login');
   }
-});
+})->name("root");
 
 $app->map('/login/', function () use ($app) {
   if ($app->request->isPost()) {
@@ -101,9 +99,15 @@ $app->get('/track/', $isLoggedIn($app), function () use ($app) {
   $app->render('track.twig');
 })->name('track');
 
-$app->get('/log/', $isLoggedIn($app), function () {
-  echo "log";
-});
+$app->get('/log/', $isLoggedIn($app), function () use ($app) {
+  $user = User::find($_SESSION['user_id']);
+  $user->load('times');
+  $app->render('log.twig', ['times' => $user->times]);
+})->name('log');
+
+$app->get('/user/', $isLoggedIn($app), function () {
+  echo "user";
+})->name('user');
 
 $app->post('/api/time/', function () use ($app) {
   if(!isset($_SESSION['user_id'])){

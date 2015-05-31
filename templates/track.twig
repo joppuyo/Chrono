@@ -1,18 +1,10 @@
 {% extends 'base.twig' %}
 {% set active = 'track' %}
 {% block head %}
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/jquery-2.1.4.js"></script>
-    <script src="js/moment.js"></script>
-    <script src="js/countdown.js"></script>
-    <script src="js/script.js"></script>
+    {% include 'app-scripts.twig' %}
 {% endblock %}
 {% block body %}
-    <div class="tab-container">
-        <div class="tab-item {% if active == 'track' %}tab-item-active{% endif %}">Track</div>
-        <div class="tab-item {% if active == 'log' %}tab-item-active{% endif %}">Log</div>
-        <div class="tab-item {% if active == 'user' %}tab-item-active{% endif %}">User</div>
-    </div>
+    {% include 'app-tabs.twig' %}
     <div class="chrono-container">
         <div class="title">
             <div class="vertical-center">Chrono</div>

@@ -77,6 +77,11 @@ body {
     float: left;
     background-color: #D8D8D8;
 }
+.tab-item a {
+    display: block;
+    color: black;
+    text-decoration: none;
+}
 
 .tab-item-active {
     background-color: white;
