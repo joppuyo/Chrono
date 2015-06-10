@@ -31,6 +31,11 @@ $view = $app->view();
 $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
+
+$app->hook('slim.before.dispatch', function() use ($app) {
+
+});
+
 $isLoggedIn = function($app) {
   return function () use ($app) {
     if (!isset($_SESSION['user_id'])) {
@@ -44,12 +49,18 @@ class User extends \Illuminate\Database\Eloquent\Model {
   {
     return $this->hasMany('Time');
   }
+  public function rememberMeTokens()
+  {
+    return $this->hasMany('RememberMeToken');
+  }
 }
 
 class Time extends \Illuminate\Database\Eloquent\Model {}
 
+class RememberMeToken extends \Illuminate\Database\Eloquent\Model {}
+
 $app->user = function () {
-  if ($_SESSION['user_id']) {
+  if (isset($_SESSION['user_id'])) {
     return User::find($_SESSION['user_id']);
   } else {
     return null;
@@ -75,6 +86,17 @@ $app->map('/login/', function () use ($app) {
     } else {
       if (password_verify($password, $user->password)){
         $_SESSION['user_id'] = $user->id;
+
+        $token = new RememberMeToken();
+
+        $factory = new RandomLib\Factory;
+        $generator = $factory->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::MEDIUM));
+        $tokenString = $generator->generateString(128);
+        $app->setCookie('chrono_remember_me_token',$tokenString,'1 year');
+
+        $token->token = $tokenString;
+
+        $user->rememberMeTokens()->save($token);
         $app->redirectTo('track');
       } else {
         $app->flashNow('error', 'Password incorrect');
@@ -138,10 +160,18 @@ $app->get('/create_db', function () {
   Capsule::schema()->create('times', function($table)
   {
     $table->increments('id');
+    $table->integer('user_id')->unsigned();
     $table->dateTime('start_datetime');
     $table->dateTime('end_datetime');
     $table->timestamps();
+    $table->foreign('user_id')->references('id')->on('users');
+  });
+  Capsule::schema()->create('remember_me_tokens', function($table)
+  {
+    $table->increments('id');
     $table->integer('user_id')->unsigned();
+    $table->string('token')->unique();
+    $table->timestamps();
     $table->foreign('user_id')->references('id')->on('users');
   });
 });
